@@ -360,7 +360,7 @@ type ChannelEdit struct {
 	UserLimit            int                    `json:"user_limit,omitempty"`
 	PermissionOverwrites []*PermissionOverwrite `json:"permission_overwrites,omitempty"`
 	ParentID             string                 `json:"parent_id,omitempty"`
-	RateLimitPerUser     int                    `json:"rate_limit_per_user,omitempty"`
+	RateLimitPerUser     *int                   `json:"rate_limit_per_user,omitempty"`
 
 	// NOTE: threads only
 
@@ -552,6 +552,17 @@ const (
 	ExplicitContentFilterAllMembers          ExplicitContentFilterLevel = 2
 )
 
+// GuildNSFWLevel type definition
+type GuildNSFWLevel int
+
+// Constants for GuildNSFWLevel levels from 0 to 3 inclusive
+const (
+	GuildNSFWLevelDefault       GuildNSFWLevel = 0
+	GuildNSFWLevelExplicit      GuildNSFWLevel = 1
+	GuildNSFWLevelSafe          GuildNSFWLevel = 2
+	GuildNSFWLevelAgeRestricted GuildNSFWLevel = 3
+)
+
 // MfaLevel type definition
 type MfaLevel int
 
@@ -674,6 +685,9 @@ type Guild struct {
 
 	// The explicit content filter level
 	ExplicitContentFilter ExplicitContentFilterLevel `json:"explicit_content_filter"`
+
+	// The NSFW Level of the guild
+	NSFWLevel GuildNSFWLevel `json:"nsfw_level"`
 
 	// The list of enabled guild features
 	Features []string `json:"features"`

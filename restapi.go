@@ -1321,6 +1321,20 @@ func (s *Session) GuildEmojis(guildID string) (emoji []*Emoji, err error) {
 	return
 }
 
+// GuildEmoji returns specified emoji.
+// guildID : The ID of a Guild
+// emojiID : The ID of an Emoji to retrieve
+func (s *Session) GuildEmoji(guildID, emojiID string) (emoji *Emoji, err error) {
+	var body []byte
+	body, err = s.RequestWithBucketID("GET", EndpointGuildEmoji(guildID, emojiID), nil, EndpointGuildEmoji(guildID, emojiID))
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &emoji)
+	return
+}
+
 // GuildEmojiCreate creates a new emoji
 // guildID : The ID of a Guild.
 // name    : The Name of the Emoji.
@@ -2310,7 +2324,7 @@ func (s *Session) WebhookMessageDelete(webhookID, token, messageID string) (err 
 // MessageReactionAdd creates an emoji reaction to a message.
 // channelID : The channel ID.
 // messageID : The message ID.
-// emojiID   : Either the unicode emoji for the reaction, or a guild emoji identifier.
+// emojiID   : Either the unicode emoji for the reaction, or a guild emoji identifier in name:id format (e.g. "hello:1234567654321")
 func (s *Session) MessageReactionAdd(channelID, messageID, emojiID string) error {
 
 	// emoji such as  #⃣ need to have # escaped
