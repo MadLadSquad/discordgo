@@ -909,9 +909,11 @@ func (s *State) onReady(se *Session, r *Ready) (err error) {
 	// if state is disabled, store the bare essentials.
 	if !se.StateEnabled {
 		ready := Ready{
-			Version:   r.Version,
-			SessionID: r.SessionID,
-			User:      r.User,
+			Version:     r.Version,
+			SessionID:   r.SessionID,
+			User:        r.User,
+			Shard:       r.Shard,
+			Application: r.Application,
 		}
 
 		s.Ready = ready
@@ -1023,7 +1025,14 @@ func (s *State) OnInterface(se *Session, i interface{}) (err error) {
 		}
 	case *GuildEmojisUpdate:
 		if s.TrackEmojis {
-			err = s.EmojisAdd(t.GuildID, t.Emojis)
+			var guild *Guild
+			guild, err = s.Guild(t.GuildID)
+			if err != nil {
+				return err
+			}
+			s.Lock()
+			defer s.Unlock()
+			guild.Emojis = t.Emojis
 		}
 	case *ChannelCreate:
 		if s.TrackChannels {
