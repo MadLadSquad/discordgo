@@ -42,6 +42,7 @@ var (
 	EndpointCDNChannelIcons = EndpointCDN + "channel-icons/"
 	EndpointCDNBanners      = EndpointCDN + "banners/"
 	EndpointCDNGuilds       = EndpointCDN + "guilds/"
+	EndpointCDNRoleIcons    = EndpointCDN + "role-icons/"
 
 	EndpointVoice        = EndpointAPI + "/voice/"
 	EndpointVoiceRegions = EndpointVoice + "regions"
@@ -112,6 +113,10 @@ var (
 	}
 	EndpointGuildMemberAvatarAnimated = func(gId, uID, aID string) string {
 		return EndpointCDNGuilds + gId + "/users/" + uID + "/avatars/" + aID + ".gif"
+	}
+
+	EndpointRoleIcon = func(rID, hash string) string {
+		return EndpointCDNRoleIcons + rID + "/" + hash + ".png"
 	}
 
 	EndpointChannel                             = func(cID string) string { return EndpointChannels + cID }
