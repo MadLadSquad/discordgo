@@ -256,9 +256,13 @@ type IntegrationAccount struct {
 }
 
 // A VoiceRegion stores data for a specific voice region server.
+// https://discord.com/developers/docs/resources/voice#voice-region-object
 type VoiceRegion struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	Optimal    bool   `json:"optimal"`
+	Deprecated bool   `json:"deprecated"`
+	Custom     bool   `json:"custom"`
 }
 
 // InviteTargetType indicates the type of target of an invite
@@ -643,6 +647,7 @@ type EmojiParams struct {
 	// NOTE: can be only set on creation.
 	Image string `json:"image,omitempty"`
 	// Roles for which this emoji will be available.
+	// NOTE: can not be used with application emoji endpoints.
 	Roles []string `json:"roles,omitempty"`
 }
 
@@ -1918,8 +1923,8 @@ const (
 	AuditLogChangeKeyPrivacylevel AuditLogChangeKey = "privacy_level"
 	// AuditLogChangeKeyPruneDeleteDays is sent when number of days after which inactive and role-unassigned members are kicked changed (int) - guild
 	AuditLogChangeKeyPruneDeleteDays AuditLogChangeKey = "prune_delete_days"
-	// AuditLogChangeKeyPulibUpdatesChannelID is sent when id of the public updates channel changed (snowflake) - guild
-	AuditLogChangeKeyPulibUpdatesChannelID AuditLogChangeKey = "public_updates_channel_id"
+	// AuditLogChangeKeyPublicUpdatesChannelID is sent when id of the public updates channel changed (snowflake) - guild
+	AuditLogChangeKeyPublicUpdatesChannelID AuditLogChangeKey = "public_updates_channel_id"
 	// AuditLogChangeKeyRateLimitPerUser is sent when amount of seconds a user has to wait before sending another message changed (int) - channel
 	AuditLogChangeKeyRateLimitPerUser AuditLogChangeKey = "rate_limit_per_user"
 	// AuditLogChangeKeyRegion is sent when region changed (string) - guild
@@ -2369,7 +2374,7 @@ type PollAnswerCount struct {
 // PollResults contains voting results on a poll.
 type PollResults struct {
 	Finalized    bool               `json:"is_finalized"`
-	AnswerCounts []*PollAnswerCount `json:"answer_count"`
+	AnswerCounts []*PollAnswerCount `json:"answer_counts"`
 }
 
 // Poll contains all poll related data.
